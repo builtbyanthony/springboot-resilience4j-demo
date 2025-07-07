@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: retrywithcb
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,beans,circuitbreakers,env
+  endpoint:
+    health:
+      show-details: always 
+      
+resilience4j:
+  circuitbreaker:
+    instances:
+      myService:
+        register-health-indicator: true
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 2
+  retry:
+    instances:
+      myService:
+        maxAttempts: 3
+        waitDuration: 2s
+        
+
